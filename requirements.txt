@@ -1,0 +1,4 @@
+faster-whisper==1.2.1
+av==16.1.0
+ctranslate2==4.8.2
+yt-dlp[default,deno]==2026.8.19
