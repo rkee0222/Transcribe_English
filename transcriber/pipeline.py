@@ -68,6 +68,7 @@ class Pipeline:
                     except TaskError:
                         raise
                     except Exception as exc:
+                        self.check()
                         raise TaskError("youtube", "YouTube 음성을 다운로드하지 못했습니다. 공개 영상인지, 로그인·지역 제한이 있는지, 인터넷 연결이 정상인지 확인하세요.") from exc
                     job.title = metadata["title"]
                 else:
