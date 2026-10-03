@@ -10,6 +10,8 @@
 자동 테스트로 원문 불변·ID 대응·중복 발화·번역 재시도·2분 경계·Notion 제한과 복구·성공 후 정리를 검증합니다. MP4/MKV/MOV/WEBM에서 오디오 추출도 검증합니다.
 **RTX 4060 실기기, large-v3-turbo GPU 추론, 실제 OpenAI 번역, 실제 Notion 계정 저장, YouTube 다운로드는 아직 통합 검증하지 않았습니다.** Windows EXE는 Windows 빌드가 성공한 뒤 사용할 수 있습니다. 워크플로 파일을 올린 사실만으로 빌드 성공을 의미하지 않습니다.
 
+Windows EXE 빌드와 창 실행 검사는 [빌드 #3](https://github.com/rkee0222/Transcribe_English/actions/runs/37118067291)에서 성공했습니다. 배포 artifact는 약 1.47GB이며, 실제 GPU·API 연동은 미검증입니다. 상세 결과는 [검증 기록](docs/VALIDATION.md)을 참고하세요.
+
 ## Windows EXE 받기
 
 1. 이 저장소의 **Actions → Build Windows EXE**를 엽니다.
