@@ -16,13 +16,13 @@ echo Creating Python environment...
 %TRANSCRIBE_PY% -m venv .venv
 if errorlevel 1 goto failed
 :dependencies
-if exist ".venv\installed-youtube-v1.ok" goto launch
+if exist ".venv\installed-notion-gpu-v1.ok" goto launch
 echo Installing packages. First launch may take several minutes...
 ".venv\Scripts\python.exe" -m pip install --disable-pip-version-check -r requirements.txt
 if errorlevel 1 goto failed
 ".venv\Scripts\python.exe" -m pip check
 if errorlevel 1 goto failed
-echo installed>".venv\installed-youtube-v1.ok"
+echo installed>".venv\installed-notion-gpu-v1.ok"
 :launch
 ".venv\Scripts\python.exe" app.py
 if errorlevel 1 goto failed

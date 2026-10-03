@@ -1,0 +1,59 @@
+name: Build Windows EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app.py'
+      - 'transcriber/**'
+      - 'requirements*.txt'
+      - '*.spec'
+      - '.github/workflows/windows-build.yml'
+      - 'tests/**'
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+          cache: pip
+      - name: Install dependencies and CUDA libraries
+        run: python -m pip install -r requirements-build.txt
+      - name: Verify dependencies
+        run: python -m pip check
+      - name: Tests (no production API keys)
+        run: python -m unittest discover -s tests -v
+      - name: Build EXE
+        run: python -m PyInstaller --noconfirm --clean EnglishListening.spec
+      - name: Smoke test GUI startup
+        shell: pwsh
+        run: |
+          $process = Start-Process -FilePath "dist/EnglishListening/EnglishListening.exe" -PassThru
+          Start-Sleep -Seconds 12
+          if ($process.HasExited) { throw "EXE exited before GUI readiness" }
+          $process.Refresh()
+          if ($process.MainWindowHandle -eq 0) {
+            Stop-Process -Id $process.Id
+            throw "EXE did not create a window"
+          }
+          if ($process.MainWindowTitle -ne "영어듣기 · 영상에서 Notion까지") {
+            Stop-Process -Id $process.Id
+            throw "Unexpected window, possibly startup error"
+          }
+          Stop-Process -Id $process.Id
+      - name: Include instructions
+        shell: pwsh
+        run: Copy-Item README.md dist/EnglishListening/README.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EnglishListening-Windows-x64
+          path: dist/EnglishListening/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1
