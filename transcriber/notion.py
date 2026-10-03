@@ -23,7 +23,8 @@ def text_parts(value, limit=1800):
 def paragraphs(text):
     parts = list(text_parts(text))
     if not parts:
-        parts = [""]
+        yield {"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}
+        return
     for index in range(0, len(parts), 16):
         yield {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [
             {"type": "text", "text": {"content": value}} for value in parts[index:index + 16]

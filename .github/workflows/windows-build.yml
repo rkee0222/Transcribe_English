@@ -12,6 +12,9 @@ on:
       - 'tests/**'
 permissions:
   contents: read
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   windows:
     runs-on: windows-latest

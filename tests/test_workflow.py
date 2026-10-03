@@ -89,6 +89,11 @@ class TranslationTests(unittest.TestCase):
 
 
 class FormattingTests(unittest.TestCase):
+    def test_blank_paragraph_uses_empty_rich_text(self):
+        block = list(paragraphs(""))[0]
+        self.assertEqual(block["paragraph"]["rich_text"], [])
+        self.assertEqual(block_text(block), "")
+
     def test_two_minute_boundaries_do_not_split_utterances(self):
         rows = [Segment(0, 119, 122, "Crosses boundary."), Segment(1, 125, 126, "Next.")]
         texts = [block_text(x) for x in build_blocks(rows, {"0": "경계", "1": "다음"}, 360)]
